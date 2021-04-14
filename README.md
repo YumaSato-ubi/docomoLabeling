@@ -1,2 +1,2 @@
-# ActivityLabeling
-行動ラベル作成用アプリ
+# docomoLabeling
+docomoとの共同研究に用いたアノテーションアプリ
