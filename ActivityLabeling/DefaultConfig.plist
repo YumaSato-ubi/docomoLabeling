@@ -3,34 +3,36 @@
 <plist version="1.0">
 <dict>
 	<key>ssl</key>
-	<false/>
+	<true/>
 	<key>host</key>
-	<string>localhost</string>
+	<string>ubi-lynx-db.naist.jp</string>
 	<key>port</key>
-	<string>8086</string>
+	<string>443</string>
 	<key>database</key>
-	<string>app</string>
+	<string>docomo</string>
 	<key>measurement</key>
-	<string>label</string>
+	<string>houseDB</string>
 	<key>activities</key>
 	<array>
-		<string>StayingAtHome</string>
-		<string>PersonalHygiene</string>
-		<string>Cooking</string>
-		<string>Eating</string>
-		<string>WashingDishes</string>
-		<string>UsingToilet</string>
-		<string>Bathing</string>
-		<string>CleaningRoom</string>
-		<string>CleaningBathroom</string>
-		<string>Laundry</string>
-		<string>WorkingOnPC</string>
-		<string>WatchingTelevision</string>
-		<string>PlayingGame</string>
-		<string>ReadingBook</string>
-		<string>UsingSmartphone</string>
-		<string>Sleeping</string>
-		<string>Dressing</string>
+		<string>睡眠</string>
+		<string>運動</string>
+		<string>食事</string>
+		<string>服薬</string>
+		<string>個人衛生</string>
+		<string>トイレ</string>
+		<string>入浴・シャワー</string>
+		<string>身支度</string>
+		<string>掃除</string>
+		<string>料理</string>
+		<string>食器洗い</string>
+		<string>洗濯</string>
+		<string>TV視聴</string>
+		<string>読書</string>
+		<string>スマホ・タブレット</string>
+		<string>ゲーム機</string>
+		<string>通勤・通学</string>
+		<string>その他外出</string>
+		<string>仕事・勉強</string>
 	</array>
 </dict>
 </plist>

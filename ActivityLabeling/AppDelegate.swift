@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  ActivityLabeling
 //
-//  Created by Wataru Sasaki on 2018/02/10.
+//  Created by Wataru Sasaki on 2020/10/09.
 //  Copyright © 2018年 Wataru Sasaki. All rights reserved.
 //
 
@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DefaultConfig().setup()
         
         // NavigationBarの色を統一する
-        UINavigationBar.appearance().barTintColor = .flatBlack
+        UINavigationBar.appearance().barTintColor = .flatBlack()
         UINavigationBar.appearance().tintColor = .white
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         

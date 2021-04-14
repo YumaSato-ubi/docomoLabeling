@@ -30,7 +30,6 @@ class AddLabelViewController: FormViewController {
             self.present(alert, animated: true)
             return
         }
-        
         self.api.write(time: time, activity: activity, status: status, handler: { error in
             
             guard (error == nil) else {
@@ -39,12 +38,9 @@ class AddLabelViewController: FormViewController {
                 self.present(alert, animated: true)
                 return
             }
-            
-            self.dismiss(animated: true, completion: nil)
         })
-        
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -10,7 +10,6 @@ import Foundation
 import APIKit
 
 class APIManager: NSObject {
-    
     static let shared = APIManager()
     
     var user = ""
@@ -72,7 +71,33 @@ class APIManager: NSObject {
         tags["user"] = user
         tags["activity"] = activity
         var fields: [String: Any] = [:]
-        fields["status"] = status ? 1:0
+        fields["pir"] = status ? 1:0
+        let timeInterval = time.timeIntervalSince1970
+        
+        let influxdb = InfluxDBClient(host: host, port: port, user: user, password: password, ssl: ssl)
+        let request = WriteRequest(influxdb: influxdb, precision: unit, database: database, measurement: measurement, tags: tags, fields: fields, time: timeInterval)
+        
+        Session.send(request) { result in
+            switch result {
+            case .success:
+                handler(nil)
+                
+            case .failure(let error):
+                handler(error)
+            }
+        }
+    }
+    
+    func writeStar(time: Date, status: Double, handler: @escaping (Error?) -> ()) {
+        
+        paramLoad()
+        measurement = "Satisfaction"
+        
+        var tags: [String: String] = [:]
+        tags["user"] = user
+        tags["satisfaction"] = "satisfaction"
+        var fields: [String: Any] = [:]
+        fields["level"] = status
         let timeInterval = time.timeIntervalSince1970
         
         let influxdb = InfluxDBClient(host: host, port: port, user: user, password: password, ssl: ssl)
@@ -113,46 +138,101 @@ class APIManager: NSObject {
         }
     }
     
-    /// DBからラベルデータを取得する
+    /// DBからデータを全削除する
     ///
     /// - Parameters:
     ///   - handler: 送信結果を返却する
-    func select(handler: @escaping ([[String: Any]]?, Error?) -> ()) {
+    
+    func destroyActivity(handler: @escaping (Error?) -> ()) {
         
         paramLoad()
         
-        var list = [[String: Any]]()
-        let query = "SELECT * FROM \(measurement) WHERE \"user\"='\(user)'"
+        let query = "DELETE FROM \(measurement) WHERE \"user\"='\(user)'"
         let influxdb = InfluxDBClient(host: host, port: port, user: user, password: password, ssl: ssl)
-        let request = QueryRequest(influxdb: influxdb, query: query, database: database, epoch: unit)
+        let request = QueryRequest(influxdb: influxdb, query: query, database: database)
         
         Session.send(request) { result in
             switch result {
-            case let .success(.results(value)):
-                if let results = value.results {
-                    for result in results {
-                        if let series = result.series {
-                            for s in series {
-                                for v in s.values {
-                                    list.append(zip(s.columns, v).reduce(into: [String: Any]()) { $0[$1.0] = $1.1 })
-                                }
-                            }
-                        }
-                    }
-                }
-                handler(list, nil)
-            
-            case .success(.noContent):
-                handler(nil, nil)
-            
-            case .success(.unknown(_)):
-                handler(nil, nil)
-            
+            case .success:
+                handler(nil)
+                
             case .failure(let error):
-                handler(nil, error)
+                handler(error)
+            }
+        }
+    }
+    func destroySatisfaction(handler: @escaping (Error?) -> ()) {
+        
+        paramLoad()
+        measurement = "Satisfaction"
+        
+        let query = "DELETE FROM \(measurement) WHERE \"user\"='\(user)'"
+        let influxdb = InfluxDBClient(host: host, port: port, user: user, password: password, ssl: ssl)
+        let request = QueryRequest(influxdb: influxdb, query: query, database: database)
+        
+        Session.send(request) { result in
+            switch result {
+            case .success:
+                handler(nil)
+                
+            case .failure(let error):
+                handler(error)
             }
         }
     }
     
     
-}
+    /// DBからラベルデータを取得する
+        ///
+        /// - Parameters:
+        ///   - handler: 送信結果を返却する
+        func select(handler: @escaping ([[String: Any]]?, Error?) -> ()) {
+             
+             paramLoad()
+             
+             var list = [[String: Any]]()
+             let query = "SELECT * FROM \(measurement)"
+             let influxdb = InfluxDBClient(host: host, port: port, user: user, password: password, ssl: ssl)
+             let request = QueryRequest(influxdb: influxdb, query: query, database: database, epoch: unit)
+             
+             Session.send(request) { result in
+                 switch result {
+                 case let .success(.results(value)):
+
+                     if let results = value.results {
+                         for result in results {
+                             if let series = result.series {
+                                 for s in series {
+                                     for v in s.values {
+                                         list.append(zip(s.columns, v).reduce(into: [String: Any]()) { $0[$1.0] = $1.1 })
+                                     }
+                                 }
+                             }
+                         }
+                     }
+
+    //                 print(list.last!["status"]!)
+    //                 let bathActive = list.last!["status"]! as? StringOrIntType
+    //                 let bathStr = bathActive?.string()
+    //                 if bathStr == "1" {
+    //                     print("Bathing")
+    //                 }
+                     handler(list, nil)
+                 
+                 case .success(.noContent):
+                     print("noContent")
+                     handler(nil, nil)
+                 
+                 case .success(.unknown(_)):
+                     print("unknown")
+                     handler(nil, nil)
+                 
+                 case .failure(let error):
+                     print("failure")
+                     handler(nil, error)
+                 }
+             }
+
+         }
+        
+    }

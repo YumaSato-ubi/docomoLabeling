@@ -13,6 +13,7 @@ import APIKit
 class HistoryTableViewController: UITableViewController {
     
     let api = APIManager.shared
+    static let shareds = HistoryTableViewController()
     var labelList = [[String: Any]()]
     
     
@@ -35,6 +36,31 @@ class HistoryTableViewController: UITableViewController {
         })
     }
     
+//    @IBAction func destroyBuutton(_ sender: Any) {
+//                let message = "全データを消去します.\nよろしいですか？"
+//                let alert = UIAlertController(title: "Warning!", message: message, preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: "Destroy", style: .default, handler: { action in
+//                    self.api.destroyActivity(handler: { error in
+//                             guard (error == nil) else {
+//                             let alert = UIAlertController(title: "Error", message: error.debugDescription, preferredStyle: .alert)
+//                             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//                             self.present(alert, animated: true)
+//                             return
+//                             }
+//                        })
+//                    self.api.destroySatisfaction(handler: { error in
+//                             guard (error == nil) else {
+//                             let alert = UIAlertController(title: "Error", message: error.debugDescription, preferredStyle: .alert)
+//                             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//                             self.present(alert, animated: true)
+//                             return
+//                             }
+//                        self.reload()
+//                        })
+//                }))
+//                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//                self.present(alert, animated: true)
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -60,7 +86,7 @@ class HistoryTableViewController: UITableViewController {
         
         guard let time = dict["time"] as? StringOrIntType,
             let activity = dict["activity"] as? StringOrIntType,
-            let status = dict["status"] as? StringOrIntType else {
+            let status = dict["pir"] as? StringOrIntType else {
             return cell
         }
         
@@ -86,7 +112,7 @@ class HistoryTableViewController: UITableViewController {
         
         guard let time = dict["time"] as? StringOrIntType,
             let activity = dict["activity"] as? StringOrIntType,
-            let status = dict["status"] as? StringOrIntType else {
+            let status = dict["pir"] as? StringOrIntType else {
                 let alert = UIAlertController(title: "Error", message: "Value error.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alert, animated: true)

@@ -24,68 +24,79 @@ class SetupViewController: FormViewController {
         self.title = "Labeling"
         
         form
-            +++ Section("Datababe Config")
+            +++ Section("Database Config")
             
-            <<< SwitchRow() {
+//            <<< SwitchRow() {
+            <<< AccountRow() {
                 $0.tag = Config.ssl
                 $0.title = "SSL"
-                $0.value = self.defaults.bool(forKey: Config.ssl)
+//                $0.value = self.defaults.bool(forKey: Config.ssl)
+                $0.placeholder = "固定"
                 
-            }.onChange {row in
-                // 内容が変更されたらUserdefaultsに書き込む
-                self.defaults.set(row.value, forKey: Config.ssl)
             }
+//            .onChange {row in
+//                // 内容が変更されたらUserdefaultsに書き込む
+//                self.defaults.set(row.value, forKey: Config.ssl)
+//            }
             
             <<< AccountRow() {
                 $0.tag = Config.host
                 $0.title = "Host"
-                $0.placeholder = "Host"
-                $0.value = self.defaults.string(forKey: Config.host)
+                $0.placeholder = "固定"
+//                $0.placeholder = "Host"
+//                $0.value = self.defaults.string(forKey: Config.host)
                 
-            }.onChange {row in
-                // 内容が変更されたらUserdefaultsに書き込む
-                self.defaults.set(row.value, forKey: Config.host)
             }
+//            .onChange {row in
+//                // 内容が変更されたらUserdefaultsに書き込む
+//                self.defaults.set(row.value, forKey: Config.host)
+//            }
             
             <<< IntRow() {
                 $0.tag = Config.port
                 $0.title = "Port"
-                $0.placeholder = "Port"
-                $0.value = self.defaults.integer(forKey: Config.port)
-                let formatter = NumberFormatter()
-                formatter.numberStyle = .none
-                $0.formatter = formatter
+                $0.placeholder = "固定"
+//                $0.placeholder = "Port"
+//                $0.value = self.defaults.integer(forKey: Config.port)
+//                let formatter = NumberFormatter()
+//                formatter.numberStyle = .none
+//                $0.formatter = formatter
                 
-                }.onChange {row in
-                    // 内容が変更されたらUserdefaultsに書き込む
-                    self.defaults.set(row.value, forKey: Config.port)
-            }
+                }
+//            .onChange {row in
+//                    // 内容が変更されたらUserdefaultsに書き込む
+//                    self.defaults.set(row.value, forKey: Config.port)
+//            }
             
             <<< AccountRow() {
                 $0.tag = Config.user
                 $0.title = "User"
-                $0.placeholder = "User"
-                if let value = Keychain.user.value() {
-                    $0.value = value
-                }
+                $0.placeholder = "固定"
+//                $0.placeholder = "User"
+//                if let value = Keychain.user.value() {
+//                    $0.value = value
+//                }
                 
-                }.onChange {row in
-                    // 内容が変更されたらKeyChainに書き込む
-                    Keychain.user.set(row.value ?? "")
-            }
+                }
+//            .onChange {row in
+//                    // 内容が変更されたらKeyChainに書き込む
+//                    Keychain.user.set(row.value ?? "")
+//            }
             
             <<< PasswordRow() {
                 $0.tag = Config.password
                 $0.title = "Password"
-                $0.placeholder = "Password"
-                if let value = Keychain.password.value() {
-                    $0.value = value
-                }
+                $0.placeholder = "固定"
+//                $0.placeholder = "Password"
+//                if let value = Keychain.password.value() {
+//                    $0.value = value
+//                }
                 
-                }.onChange {row in
-                    // 内容が変更されたらKeyChainに書き込む
-                    Keychain.password.set(row.value ?? "")
-            }
+                }
+//            .onChange {row in
+//                    // 内容が変更されたらKeyChainに書き込む
+//                    Keychain.password.set(row.value ?? "")
+//            }
             
             <<< ButtonRow() {
                 $0.title = "Test Connection"
@@ -140,36 +151,36 @@ class SetupViewController: FormViewController {
     
     // 設定を初期設定に戻す
     @IBAction func resetConfig(_ sender: Any) {
-        let alert = UIAlertController(title: "Initialize settings", message: "Do you really want to initialize settings?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            
-            // 初期設定に戻す
-            DefaultConfig().reset()
-            
-            // 入力エリアの表示も更新する
-            let ssl = self.form.rowBy(tag: Config.ssl) as! SwitchRow
-            ssl.value = self.defaults.bool(forKey: Config.ssl)
-            ssl.reload()
-            
-            let host = self.form.rowBy(tag: Config.host) as! AccountRow
-            host.value = self.defaults.string(forKey: Config.host)
-            host.reload()
-            
-            let port = self.form.rowBy(tag: Config.port) as! IntRow
-            port.value = self.defaults.integer(forKey: Config.port)
-            port.reload()
-            
-            let user = self.form.rowBy(tag: Config.user) as! AccountRow
-            user.value = ""
-            user.reload()
-            
-            let password = self.form.rowBy(tag: Config.password) as! PasswordRow
-            password.value = ""
-            password.reload()
-            
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        self.present(alert, animated: true)
+//        let alert = UIAlertController(title: "Initialize settings", message: "Do you really want to initialize settings?", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+//            
+//            // 初期設定に戻す
+//            DefaultConfig().reset()
+//            
+//            // 入力エリアの表示も更新する
+//            let ssl = self.form.rowBy(tag: Config.ssl) as! SwitchRow
+//            ssl.value = self.defaults.bool(forKey: Config.ssl)
+//            ssl.reload()
+//            
+//            let host = self.form.rowBy(tag: Config.host) as! AccountRow
+//            host.value = self.defaults.string(forKey: Config.host)
+//            host.reload()
+//            
+//            let port = self.form.rowBy(tag: Config.port) as! IntRow
+//            port.value = self.defaults.integer(forKey: Config.port)
+//            port.reload()
+//            
+//            let user = self.form.rowBy(tag: Config.user) as! AccountRow
+//            user.value = ""
+//            user.reload()
+//            
+//            let password = self.form.rowBy(tag: Config.password) as! PasswordRow
+//            password.value = ""
+//            password.reload()
+//            
+//        }))
+//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//        self.present(alert, animated: true)
     }
     
 }
